@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>My Rust + Webpack project!</title>
+
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+
+      * {
+        font-family: "Open Sans";
+      }
+
+      .vert {
+        display: flex;
+        flex-flow: column;
+      }
+
+      .horiz {
+        display: flex;
+        flex-flow: row;
+      }
+
+      #canvas {
+        width: 663px;
+        height: 517px;
+      }
+
+      #canvas-thing {
+        width: 770px;
+        border-right: solid 1px black;
+      }
+
+      .centered {
+        justify-content: center;
+      }
+
+      .centered .horiz {
+        width: 100%;
+      }
+
+      .centered .vert {
+        height: 100%;
+      }
+
+      #buttons {
+        justify-content: space-between;
+        width: 70vw;
+      }
+
+      #buttons > * {
+        width: 26%;
+      }
+    </style>
+  </head>
+  <body style="margin: 0; display: inline-block;">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.4.1/dist/chart.min.js"></script>
+<!--    <script src="https://cdn.jsdelivr.net/npm/regression@2.0.1/dist/regression.min.js "></script>-->
+
+    <div class="horiz">
+      <div class="vert centered" id="canvas-thing">
+        <div class="centered horiz"><canvas id="scatter" width="1326" height="1034"></canvas></div>
+        <div class="centered horiz">
+          <div class="vert">
+            <label>
+              X axis
+              <select id="x-axis">
+                <option value="weight_of_social_influence">Weight of social influence</option>
+                <option value="quality_threshold">Quality threshold</option>
+                <option value="experience_level">Experience level</option>
+                <option value="certainty">Certainty</option>
+                <option value="reliance_on_informational_environment">Reliance on informational environment</option>
+                <option value="utility threshold">Utility threshold</option>
+                <option value="kd">Knowledge of domain</option>
+              </select>
+            </label>
+            <label>
+              Y axis
+              <select id="y-axis">
+                <option value="weight_of_social_influence">Weight of social influence</option>
+                <option value="quality_threshold">Quality threshold</option>
+                <option value="experience_level">Experience level</option>
+                <option value="certainty">Certainty</option>
+                <option value="reliance_on_informational_environment">Reliance on informational environment</option>
+                <option value="utility_threshold">Utility threshold</option>
+                <option value="kd">Knowledge of domain</option>
+              </select>
+            </label>
+            <label>
+              Regression
+              <select id="regression-type">
+                <option value="linear">Linear</option>
+                <option value="exponential">Exponential</option>
+                <option value="logarithmic">Logarithmic</option>
+                <option value="power">Power</option>
+                <option value="polynomial">Polynomial</option>
+              </select>
+            </label>
+            <button id="graph-regression">Graph</button>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="vert">
+        <div class="horiz">
+          <canvas id="certainty-graph" width="400px" height="400px"></canvas>
+          <canvas id="ship-count" width="400px" height="400px"></canvas>
+          <canvas id="adopters" width="400px" height="400px"></canvas>
+        </div>
+        <div class="horiz">
+          <canvas id="average-kd" width="400px" height="400px"></canvas>
+          <canvas id="he-graph" width="400px" height="400px"></canvas>
+          <canvas id="informational-environment-reliance" width="400px" height="400px"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="horiz centered">
+      <div class="horiz" id="buttons">
+        <div class="centered vert">
+          <label for="release-year" id="release-year-label">Release year</label>
+          <label for="release-year" id="release-year-val"></label>
+          <input type="range" value="2022" min="2022" max="2035" id="release-year" />
+          <label id="informational-environment-reliability-label" for="informational-environment-reliability">Informational environment quality</label>
+          <label id="informational-environment-reliability-val" for="informational-environment-reliability"></label>
+          <input type="range" value="0.6" min="0.05" max="1.0" step="0.05" id="informational-environment-reliability" />
+          <label id="provider-reputation-label" for="provider-reputation">Provider Reputation</label>
+          <label id="provider-reputation-val" for="provider-reputation"></label>
+          <input type="range" value="0.5" min="0.05" step="0.05" max="1.0" id="provider-reputation"/>
+          <label id="new-product-quality-label" for="new-product-quality">Quality of new product</label>
+          <label id="new-product-quality-val" for="new-product-quality"></label>
+          <input type="range" value="0.5" min="0.05" step="0.05" max="1" id="new-product-quality" />
+        </div>
+        <div class="centered vert">
+          <label id="frac-he-label" for="frac-he">Fraction Highly Experienced</label>
+          <label id="frac-he-val" for="frac-he"></label>
+          <input type="range" value="0.40" min="0" step="0.05" max="1" id="frac-he" />
+          <label id="prop-ea-label" for="frac-ea">Fraction Early Adopters</label>
+          <p style="color: #4d4d4d; margin: 0; margin-bottom: 10px;">(only adjust if decoupling from highly exp.)</p>
+          <label id="frac-ea-val" for="frac-ea"></label>
+          <input type="range" value="0.33" min="0" step="0.05" max="1" id="frac-ea" />
+<!--          <label id="wsi-label" for="wsi">Weight of social influence late adopters</label>-->
+<!--          <label id="wsi-val" for="wsi"></label>-->
+<!--          <input type="range" value="0.6" min="0.1" step="0.01" max="1" id="wsi" />-->
+          <label id="decay-label" for="decay">Decay factor</label>
+          <label id="decay-val" for="decay"></label>
+          <input type="range" value="0.5" min="0.0" step="0.05" max="1" id="decay" />
+
+<!--          <div>-->
+<!--            <input type="checkbox" id="high-sea-ice" />-->
+<!--            <label for="high-sea-ice">Enable High Sea Ice Cover Years?</label>-->
+<!--          </div>-->
+
+          <label style="display: none;" id="realism-val" for="realism">Growth Scenario</label>
+
+          <select name="Model Realism" id="realism">
+            <option value="realistic">Realistic</option>
+            <option value="conservative">Conservative</option>
+            <option value="optimistic">Optimistic</option>
+          </select>
+        </div>
+        <div class="centered vert">
+<!--          <label id="min-year-label" for="min-year-view">Display route pattern map starting from this year</label>-->
+<!--          <input type="range" value="2022" min="2022" step="1" max="2035" id="min-year-view" />-->
+<!--          <label id="max-year-label" for="min-year-view">Display route pattern map ending with this year</label>-->
+<!--          <input type="range" value="2035" min="2022" step="1" max="2035" id="max-year-view" />-->
+
+          <button id="play">Run</button>
+          <button id="play-30">Run 30 Times</button>
+          <button id="play-csv">Run + CSV</button>
+          <button id="record-30">Run 30 Times + CSV</button>
+
+          <p id="simulation-number"></p>
+        </div>
+      </div>
+    </div>
+
+    <script src="index.js"></script>
+  </body>
+</html>
