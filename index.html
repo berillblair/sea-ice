@@ -124,7 +124,7 @@
           <input type="range" value="2022" min="2022" max="2035" id="release-year" />
           <label id="informational-environment-reliability-label" for="informational-environment-reliability">Informational environment quality</label>
           <label id="informational-environment-reliability-val" for="informational-environment-reliability"></label>
-          <input type="range" value="0.6" min="0.05" max="1.0" step="0.05" id="informational-environment-reliability" />
+          <input type="range" value="0.5" min="0.05" max="1.0" step="0.05" id="informational-environment-reliability" />
           <label id="provider-reputation-label" for="provider-reputation">Provider Reputation</label>
           <label id="provider-reputation-val" for="provider-reputation"></label>
           <input type="range" value="0.5" min="0.05" step="0.05" max="1.0" id="provider-reputation"/>
@@ -135,18 +135,10 @@
         <div class="centered vert">
           <label id="frac-he-label" for="frac-he">Fraction Highly Experienced</label>
           <label id="frac-he-val" for="frac-he"></label>
-          <input type="range" value="0.40" min="0" step="0.05" max="1" id="frac-he" />
-<!--          <label id="wsi-label" for="wsi">Weight of social influence late adopters</label>-->
-<!--          <label id="wsi-val" for="wsi"></label>-->
-<!--          <input type="range" value="0.6" min="0.1" step="0.01" max="1" id="wsi" />-->
+          <input type="range" value="0.5" min="0" step="0.05" max="1" id="frac-he" />
           <label id="decay-label" for="decay">Decay factor</label>
           <label id="decay-val" for="decay"></label>
-          <input type="range" value="0.5" min="0.0" step="0.05" max="1" id="decay" />
-
-<!--          <div>-->
-<!--            <input type="checkbox" id="high-sea-ice" />-->
-<!--            <label for="high-sea-ice">Enable High Sea Ice Cover Years?</label>-->
-<!--          </div>-->
+          <input type="range" value="0.0" min="0.0" step="0.05" max="1" id="decay" />
 
           <label style="display: none;" id="realism-val" for="realism">Growth Scenario</label>
 
@@ -157,11 +149,6 @@
           </select>
         </div>
         <div class="centered vert">
-<!--          <label id="min-year-label" for="min-year-view">Display route pattern map starting from this year</label>-->
-<!--          <input type="range" value="2022" min="2022" step="1" max="2035" id="min-year-view" />-->
-<!--          <label id="max-year-label" for="min-year-view">Display route pattern map ending with this year</label>-->
-<!--          <input type="range" value="2035" min="2022" step="1" max="2035" id="max-year-view" />-->
-
           <button id="play">Run</button>
           <button id="play-30">Run 30 Times</button>
           <button id="play-csv">Run + CSV</button>
